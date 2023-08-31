@@ -101,20 +101,19 @@ if (!isset($_SESSION['login'])) {
                                     </div>
                                 </nav>
                             </div>
-                            <div class="sb-sidenav-menu-heading">Setting User</div>
-                            <a class="nav-link" href="register.php">
-                                <div class="sb-nav-link-icon"><i class="fa-solid fa-user-pen"></i></i></div>
-                                Registrasi User
-                            </a>
-                            <a class="nav-link" href="data-user.php">
+                            <?php if ($_SESSION['hak_akses'] == 'admin') : ?>
+                                <div class="sb-sidenav-menu-heading">Register</div>
+                                <a class="nav-link" href="register.php">
+                                    <div class="sb-nav-link-icon"><i class="fa-solid fa-id-card"></i></div>
+                                    Register user
+                                </a>
+                                <a class="nav-link" href="data-user.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data User
-                            </a>
-                        </div>
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        Start Bootstrap
+                                    Data User
+                                </a>
+                                </div>
+                            <?php endif; ?>
+                            
                     </div>
                 </nav>
             </div>
