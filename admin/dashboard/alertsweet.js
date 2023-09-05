@@ -27,3 +27,10 @@
             text: 'Terjadi Kesalahan',
         })
     };
+    function berhasilupdate(){
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: 'Data User Diupdate!',
+        })
+    };

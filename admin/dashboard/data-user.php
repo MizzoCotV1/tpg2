@@ -21,7 +21,7 @@
                         <h1 class="mt-4">Tables</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Tables</li>
+                            <li class="breadcrumb-item active">Data User</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-header">
@@ -54,8 +54,7 @@
                                         <?php
                                             require_once("conn.php");
                                             $no = 1;
-                                            $query = "SELECT *
-                                            FROM user";
+                                            $query = "SELECT * FROM user";
                                             $stmt = $conn->query($query);
 
                                             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -67,7 +66,7 @@
                                             <td><?= $row['email']; ?></td>
                                             <td><?= $row['hak_akses']; ?></td>
                                             <td>
-                                                <a class="btn btn-warning btn-sm" type="button"><i class="fa-solid fa-pen-to-square"></i></a>
+                                            <a class="btn btn-warning btn-sm" type="button" href="edit-user.php?id_user=<?= $row['id_user']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
                                                 <a class="btn btn-danger btn-sm" type="button" onclick="return confirm('Data akan di Hapus?')" href="hapus-user.php?id_user=<?= $row['id_user']; ?>"><i class="fa-solid fa-trash"></i></a>
                                             </td>
                                         </tr>

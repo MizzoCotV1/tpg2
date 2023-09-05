@@ -13,6 +13,14 @@ if (!isset($_SESSION['login'])) {
 }
 
 ?>
+<?php
+    require_once("conn.php");
+    if ($_SESSION['hak_akses'] !== 'admin') {
+        echo "<script>
+            document.location.href='http://localhost/terput2/admin/dashboard/';
+        </script>";
+    }
+?>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="http://localhost/terput2/admin/dashboard/">Start Bootstrap</a>
@@ -101,6 +109,10 @@ if (!isset($_SESSION['login'])) {
                                     </div>
                                 </nav>
                             </div>
+                            <a class="nav-link" href="pendaftaran.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Pendaftaran
+                            </a>
                             <?php if ($_SESSION['hak_akses'] == 'admin') : ?>
                                 <div class="sb-sidenav-menu-heading">Register</div>
                                 <a class="nav-link" href="register.php">
