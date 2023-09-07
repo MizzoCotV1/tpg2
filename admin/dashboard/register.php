@@ -53,6 +53,7 @@
                                                 if (empty($nama) || empty($username) || empty($_POST["password"]) || empty($email) || empty($_POST["hak_akses"])) {
                                                     $error = "Form kosong";
                                                     echo "<script>formkosong();</script>";
+                                                    
                                                 }
                                                 if ($_POST["password"] !== $_POST["cpassword"]) {
                                                     echo "<script>cpassworderror();</script>";

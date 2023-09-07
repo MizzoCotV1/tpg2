@@ -9,9 +9,10 @@ require_once("conn.php");
     </script>
 <?php
 } else {
-    $status = $_SESSION['hak_akses'];
+    $statuses = $_SESSION['hak_akses'];
     $usernames = $_SESSION['username'];
     $names = $_SESSION['nama'];
+    $id_user = $_SESSION['id_user'];
 }
 
 ?>
@@ -73,7 +74,7 @@ require_once("conn.php");
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="http://localhost/terput2/admin/dashboard/agama.php">Agama</a>
+                                    <a class="nav-link" href="http://localhost/terput2/admin/dashboard/form-agama.php">Agama</a>
                                     <a class="nav-link" href="http://localhost/terput2/admin/dashboard/kewarganegaraan.php">Kewarganegaraan</a>
                                     <a class="nav-link" href="http://localhost/terput2/admin/dashboard/jurusan.php">Jurusan</a>
                                     <a class="nav-link" href="http://localhost/terput2/admin/dashboard/jenjang.php">Jenjang</a>

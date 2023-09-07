@@ -58,11 +58,9 @@
                                                 $tempat_lahir = filter_input(INPUT_POST, 'tempat_lahir', FILTER_SANITIZE_STRING);
                                                 $tgl_lahir = $_POST['tgl_lahir'];
                                                 
-                                                $tgl_input = date("Y-m-d H:i:s");
+                                                $tgl_input = date("Y-m-d");
                                                 $user_input = filter_input(INPUT_POST, 'tempat_lahir', FILTER_SANITIZE_STRING);
-                                                $id_user = $status . "(" . $usernames . ")";
-                                                
-                                                $emptyValue = '';
+                                                $id_user = $_SESSION['id_user'];
 
                                                 if(isset($_POST['status']) || isset($_POST['negara']) || isset($_POST['agama']) || isset($_POST['jurusan'])) {
                                                     $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_STRING);
@@ -73,14 +71,15 @@
                                                 } 
                                                 if (empty($nis) || empty($nama_siswa) || empty($alamat) || empty($_POST["gender"]) || empty($tempat_lahir) || empty($tgl_lahir) || empty($status) || empty($negara) || empty($agama) || empty($jurusan))  {
                                                     echo "<script>formkosong();</script>";
+                                                    $error ="Error";
                                                 }
 
                                                 if(!isset($error)){
                                                     //no error
 
                                                                 //Securly insert into database
-                                                                $sql = 'INSERT INTO pendaftaran (NIS, nama_siswa, alamat, gender, tempat_lahir, tgl_lahir, status, negara, agama, jurusan, tgl_input, user_input, tgl_update, user_update, id_user) 
-                                                                VALUES (:nis, :nama_siswa, :alamat, :gender, :tempat_lahir, :tgl_lahir, :status, :negara, :agama, :jurusan, :tgl_input, :user_input, "", "", :id_user)';
+                                                                $sql = 'INSERT INTO pendaftaran (NIS, nama_siswa, alamat, jenis_kelamin, tempat_lahir, tgl_lahir, status, id_negara, id_agama, id_jurusan, tgl_input, user_input, id_user) 
+                                                                VALUES (:nis, :nama_siswa, :alamat, :gender, :tempat_lahir, :tgl_lahir, :status, :negara, :agama, :jurusan, :tgl_input, :user_input, :id_user)';
                                                 
                                                                 $query = $conn->prepare($sql);
 
@@ -96,8 +95,6 @@
                                                                 $query->bindParam(":jurusan", $jurusan, PDO::PARAM_STR);
                                                                 $query->bindParam(":tgl_input", $tgl_input, PDO::PARAM_STR);
                                                                 $query->bindParam(":user_input", $user_input, PDO::PARAM_STR);
-                                                                $query->bindValue(":tgl_update", null, PDO::PARAM_NULL); // Assuming tgl_update and user_update are nullable
-                                                                $query->bindValue(":user_update", null, PDO::PARAM_NULL);
                                                                 $query->bindParam(":id_user", $id_user, PDO::PARAM_STR);
                                                         
                                                     }
@@ -109,6 +106,10 @@
                                                     <div class="form-floating mb-3">
                                                         <input type="text" name="nis" class="form-control" id="nis" placeholder="nis">
                                                         <label class="mx-2" for="nis">NIS</label>
+                                                    </div>
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" name="user_input" class="form-control" id="user_input" placeholder="user_input">
+                                                        <label class="mx-2" for="user_input">User Input</label>
                                                     </div>
                                                     <div class="form-floating mb-3">
                                                         <input type="text" name="nama_siswa" class="form-control" id="nama_siswa" placeholder="nama_siswa">
@@ -161,8 +162,8 @@
                                                             <option selected hidden disabled>Pilih Negara</option>
                                                                 <?php
                                                                 // Prepare and execute the SQL query
-                                                                $query = "SELECT * FROM kewarganegaraan";
-                                                                $stmt = $conn->query($query);
+                                                                $sqldata = "SELECT * FROM kewarganegaraan";
+                                                                $stmt = $conn->query($sqldata);
 
                                                                 // Fetch and display the results
                                                                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -176,8 +177,8 @@
                                                             <option selected hidden disabled>Pilih Agama</option>
                                                                 <?php
                                                                 // Prepare and execute the SQL query
-                                                                $query = "SELECT * FROM agama";
-                                                                $stmt = $conn->query($query);
+                                                                $sqldata = "SELECT * FROM agama";
+                                                                $stmt = $conn->query($sqldata);
 
                                                                 // Fetch and display the results
                                                                 while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -187,19 +188,21 @@
                                                         </select>
                                                     </div>
                                                     <div>
-                                                        <select name="jurusan" class="form-select form-select mb-3" aria-label=".form-select-lg example">
-                                                            <option selected hidden disabled>Pilih Jurusan</option>
-                                                                <?php
-                                                                // Prepare and execute the SQL query
-                                                                $query = "SELECT * FROM jurusan";
-                                                                $stmt = $conn->query($query);
+                                                    <select class="form-control" name="jurusan" id="kelas">
+                                                        <option value="">Pilih Kelas</option>
+                                                        <?php
+                                                        // Prepare and execute the SQL query using PDO
+                                                        $sqldata = "SELECT jurusan.id_jurusan, CONCAT(jenjang.nama_jenjang,' ',jurusan.nama_jurusan) AS kelas FROM jurusan INNER JOIN jenjang ON jurusan.id_jenjang = jenjang.id_jenjang";
+                                                        $stmt = $conn->query($sqldata);
 
-                                                                // Fetch and display the results
-                                                                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                                                    echo '<option value="' . $data['id_jurusan'] . '">' . $data['nama_jurusan'] . '</option>';
-                                                                }
-                                                                ?>
-                                                        </select>
+                                                        // Fetch and display the results
+                                                        while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                        ?>
+                                                            <option value="<?= $data['id_jurusan'] ?>"><?= $data['kelas'] ?></option>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </select>
                                                     </div>
                                                     <div class="col-6">
                                                         <input class="btn btn-primary btn-block w-100" type="submit" name="daftar" value="daftar">
