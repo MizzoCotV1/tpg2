@@ -40,46 +40,63 @@
                                             if(isset($_POST['register'])){
 
                                                 // filter data yang diinputkan
-                                                $nama = filter_input(INPUT_POST, 'nama', FILTER_SANITIZE_STRING);
-                                                $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-                                                // enkripsi password
-                                                $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
-                                                $cpassword = password_hash($_POST["cpassword"], PASSWORD_DEFAULT);
-                                                $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+                                                function custom_sanitize_string($input) {
+                                                    // Allow letters, numbers, spaces, dots, and some common punctuation
+                                                    return preg_replace('/[^\a-zA-Z0-9\s\/.,-]/', '', $input);
+                                                }
 
-                                                if(isset($_POST['hak_akses'])) {
-                                                    $hakAkses = $_POST['hak_akses'];
+                                                $nis = filter_input(INPUT_POST, 'nis', FILTER_SANITIZE_STRING);
+                                                $nama_siswa = filter_input(INPUT_POST, 'nama_siswa', FILTER_SANITIZE_STRING);
+                                                $alamat = custom_sanitize_string(filter_input(INPUT_POST, 'alamat', FILTER_SANITIZE_STRING));
+                                                $gender = ($_POST["gender"]);
+                                                $tempat_lahir = filter_input(INPUT_POST, 'tempat_lahir', FILTER_SANITIZE_STRING);
+                                                $tgl_lahir = $_POST['tgl_lahir'];
+                                                
+                                                $tgl_input = date("Y-m-d H:i:s");
+                                                $user_input = filter_input(INPUT_POST, 'tempat_lahir', FILTER_SANITIZE_STRING);
+                                                $id_user = $status . "(" . $usernames . ")";
+                                                
+                                                if(isset($_POST['status']) || isset($_POST['negara']) || isset($_POST['agama']) || isset($_POST['jurusan'])) {
+                                                    $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_STRING);
+                                                    $negara = filter_input(INPUT_POST, 'negara', FILTER_SANITIZE_STRING);
+                                                    $agama = filter_input(INPUT_POST, 'agama', FILTER_SANITIZE_STRING);
+                                                    $jurusan = filter_input(INPUT_POST, 'jurusan', FILTER_SANITIZE_STRING);
+
                                                 } 
-                                                if (empty($nama) || empty($username) || empty($_POST["password"]) || empty($email) || empty($_POST["hak_akses"])) {
+                                                if (empty($nis) || empty($nama_siswa) || empty($alamat) || empty($_POST["gender"]) || empty($tempat_lahir) || empty($tgl_lahir) || empty($status) || empty($negara) || empty($agama) || empty($jurusan))  {
                                                     $error = "Form kosong";
                                                     echo "<script>formkosong();</script>";
                                                 }
-                                                if ($_POST["password"] !== $_POST["cpassword"]) {
-                                                    echo "<script>cpassworderror();</script>";
-                                                    $error = "Password tidak sama";
-                                                }
                                                 if(!isset($error)){
                                                     //no error
-                                                        $sthandler = $conn->prepare("SELECT username FROM user WHERE username = :username");
-                                                        $sthandler->bindParam(':username', $username);
+                                                        $sthandler = $conn->prepare("SELECT NIS FROM pendaftaran WHERE NIS = :nis");
+                                                        $sthandler->bindParam(':nis', $nis);
                                                         $sthandler->execute();
                                                         
                                                         if($sthandler->rowCount() > 0){
                                                             echo "<script>usernameexist();</script>";
                                                         } else {
-                                                                //Securly insert into database
-                                                                $sql = 'INSERT INTO user (nama ,username, email, password, hak_akses) VALUES (:nama,:username,:email,:password,:hak_akses)';    
-                                                                $query = $conn->prepare($sql);
+                                                            //Securly insert into database
+                                                            $sql = 'INSERT INTO pendaftaran (NIS, nama_siswa, alamat, gender, tempat_lahir, tgl_lahir, status, negara, agama, jurusan, tgl_input, user_input, tgl_update, user_update, id_user) 
+                                                            VALUES (:nis, :nama_siswa, :alamat, :gender, :tempat_lahir, :tgl_lahir, :status, :negara, :agama, :jurusan, :tgl_input, :user_input, "", "", :id_user)';
 
-                                                                $query->execute(array(
-                                                            
-                                                                    ":nama" => $nama,
-                                                                    ":username" => $username,
-                                                                    ":password" => $password,
-                                                                    ":email" => $email,
-                                                                    ":hak_akses" => $hakAkses
-                                                            
-                                                                ));
+                                                            $query = $conn->prepare($sql);
+
+                                                            $query->bindParam(":nis", $nis, PDO::PARAM_STR);
+                                                            $query->bindParam(":nama_siswa", $nama_siswa, PDO::PARAM_STR);
+                                                            $query->bindParam(":alamat", $alamat, PDO::PARAM_STR);
+                                                            $query->bindParam(":gender", $gender, PDO::PARAM_STR);
+                                                            $query->bindParam(":tempat_lahir", $tempat_lahir, PDO::PARAM_STR);
+                                                            $query->bindParam(":tgl_lahir", $tgl_lahir, PDO::PARAM_STR); // Assuming tgl_lahir is a string
+                                                            $query->bindParam(":status", $status, PDO::PARAM_STR);
+                                                            $query->bindParam(":negara", $negara, PDO::PARAM_STR);
+                                                            $query->bindParam(":agama", $agama, PDO::PARAM_STR);
+                                                            $query->bindParam(":jurusan", $jurusan, PDO::PARAM_STR);
+                                                            $query->bindParam(":tgl_input", $tgl_input, PDO::PARAM_STR);
+                                                            $query->bindParam(":user_input", $user_input, PDO::PARAM_STR);
+                                                            $query->bindValue(":tgl_update", null, PDO::PARAM_NULL); // Assuming tgl_update and user_update are nullable
+                                                            $query->bindValue(":user_update", null, PDO::PARAM_NULL);
+                                                            $query->bindParam(":id_user", $id_user, PDO::PARAM_STR);
                                                         }
                                                         
                                                     }
