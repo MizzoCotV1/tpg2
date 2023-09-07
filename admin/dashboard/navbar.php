@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['login'])) {
-
+require_once("conn.php");
 ?>
     <script>
         alert("SILAHKAN LOGIN!");
@@ -10,11 +10,12 @@ if (!isset($_SESSION['login'])) {
 <?php
 } else {
     $status = $_SESSION['hak_akses'];
+    $usernames = $_SESSION['username'];
+    $names = $_SESSION['nama'];
 }
 
 ?>
 <?php
-    require_once("conn.php");
     if ($_SESSION['hak_akses'] !== 'admin') {
         echo "<script>
             document.location.href='http://localhost/terput2/admin/dashboard/';
