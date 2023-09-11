@@ -75,28 +75,34 @@
                                                 }
 
                                                 if(!isset($error)){
-                                                    //no error
 
-                                                                //Securly insert into database
+                                                    $sthandler = $conn->prepare("SELECT NIS FROM pendaftaran WHERE NIS = :nis");
+                                                    $sthandler->bindParam(':nis', $nis);
+                                                    $sthandler->execute();
+
+                                                            if($sthandler->rowCount() > 0){
+                                                                echo "<script>usernameexist();</script>";
+                                                            } else {
                                                                 $sql = 'INSERT INTO pendaftaran (NIS, nama_siswa, alamat, jenis_kelamin, tempat_lahir, tgl_lahir, status, id_negara, id_agama, id_jurusan, tgl_input, user_input, id_user) 
                                                                 VALUES (:nis, :nama_siswa, :alamat, :gender, :tempat_lahir, :tgl_lahir, :status, :negara, :agama, :jurusan, :tgl_input, :user_input, :id_user)';
-                                                
                                                                 $query = $conn->prepare($sql);
 
-                                                                $query->bindParam(":nis", $nis, PDO::PARAM_STR);
-                                                                $query->bindParam(":nama_siswa", $nama_siswa, PDO::PARAM_STR);
-                                                                $query->bindParam(":alamat", $alamat, PDO::PARAM_STR);
-                                                                $query->bindParam(":gender", $gender, PDO::PARAM_STR);
-                                                                $query->bindParam(":tempat_lahir", $tempat_lahir, PDO::PARAM_STR);
-                                                                $query->bindParam(":tgl_lahir", $tgl_lahir, PDO::PARAM_STR); // Assuming tgl_lahir is a string
-                                                                $query->bindParam(":status", $status, PDO::PARAM_STR);
-                                                                $query->bindParam(":negara", $negara, PDO::PARAM_STR);
-                                                                $query->bindParam(":agama", $agama, PDO::PARAM_STR);
-                                                                $query->bindParam(":jurusan", $jurusan, PDO::PARAM_STR);
-                                                                $query->bindParam(":tgl_input", $tgl_input, PDO::PARAM_STR);
-                                                                $query->bindParam(":user_input", $user_input, PDO::PARAM_STR);
-                                                                $query->bindParam(":id_user", $id_user, PDO::PARAM_STR);
-                                                        
+                                                                $query->execute(array(
+                                                                    ":nis" => $nis,
+                                                                    ":nama_siswa" => $nama_siswa,
+                                                                    ":alamat" => $alamat,
+                                                                    ":gender" => $gender,
+                                                                    ":tempat_lahir" => $tempat_lahir,
+                                                                    ":tgl_lahir" => $tgl_lahir,
+                                                                    ":status" => $status,
+                                                                    ":negara" => $negara,
+                                                                    ":agama" => $agama,
+                                                                    ":jurusan" => $jurusan,
+                                                                    ":tgl_input" => $tgl_input,
+                                                                    ":user_input" => $user_input,
+                                                                    ":id_user" => $id_user
+                                                                ));
+                                                            }
                                                     }
                                             }
 
@@ -241,14 +247,6 @@
         <script>
             $(document).ready(function(){
                 $('#datepicker').datepicker({
-                    format: 'yyyy-mm-dd', // Use the appropriate format for your database (e.g., 'yyyy-mm-dd')
-                    autoclose: true
-                });
-            });
-        </script>
-        <script>
-            $(document).ready(function(){
-                $('#datepicker2').datepicker({
                     format: 'yyyy-mm-dd', // Use the appropriate format for your database (e.g., 'yyyy-mm-dd')
                     autoclose: true
                 });

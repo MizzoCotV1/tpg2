@@ -74,10 +74,10 @@ require_once("conn.php");
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="http://localhost/terput2/admin/dashboard/form-agama.php">Agama</a>
-                                    <a class="nav-link" href="http://localhost/terput2/admin/dashboard/kewarganegaraan.php">Kewarganegaraan</a>
-                                    <a class="nav-link" href="http://localhost/terput2/admin/dashboard/jurusan.php">Jurusan</a>
-                                    <a class="nav-link" href="http://localhost/terput2/admin/dashboard/jenjang.php">Jenjang</a>
+                                    <a class="nav-link" href="http://localhost/terput2/admin/dashboard/master/form-agama.php">Agama</a>
+                                    <a class="nav-link" href="http://localhost/terput2/admin/dashboard/master/form-kewarganegaraan.php">Kewarganegaraan</a>
+                                    <a class="nav-link" href="http://localhost/terput2/admin/dashboard/master/form-jurusan.php">Jurusan</a>
+                                    <a class="nav-link" href="http://localhost/terput2/admin/dashboard/master/form-jenjang.php">Jenjang</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -111,17 +111,17 @@ require_once("conn.php");
                                     </div>
                                 </nav>
                             </div>
-                            <a class="nav-link" href="pendaftaran.php">
+                            <a class="nav-link" href="http://localhost/terput2/admin/dashboard/pendaftaran.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Pendaftaran
                             </a>
                             <?php if ($_SESSION['hak_akses'] == 'admin') : ?>
                                 <div class="sb-sidenav-menu-heading">Register</div>
-                                <a class="nav-link" href="register.php">
+                                <a class="nav-link" href="http://localhost/terput2/admin/dashboard/register.php">
                                     <div class="sb-nav-link-icon"><i class="fa-solid fa-id-card"></i></div>
                                     Register user
                                 </a>
-                                <a class="nav-link" href="data-user.php">
+                                <a class="nav-link" href="http://localhost/terput2/admin/dashboard/data-user.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                     Data User
                                 </a>
