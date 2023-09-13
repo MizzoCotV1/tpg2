@@ -26,17 +26,17 @@
             <div id="layoutSidenav_content">
                 <main id="admin" class="admin">
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Kewarganegaraan</h1>
+                        <h1 class="mt-4">Agama</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="http://localhost/terput2/admin/dashboard/">Dashboard</a></li>
-                            <li class="breadcrumb-item ">Master</li>
-                            <li class="breadcrumb-item active">Kewarganegaraan</li>
+                            <li class="breadcrumb-item">Master</li>
+                            <li class="breadcrumb-item active">Agama</li>
                         </ol>
                         <div class="accordion" id="accordionPanelsStayOpenExample">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                                    Data Kewarganegaraan
+                                    Data Agama
                                 </button>
                                 </h2>
                                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
@@ -45,18 +45,18 @@
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th>Negara</th>
+                                                    <th>Agama</th>
                                                     <th>Tanggal Input</th>
                                                     <th>User Input</th>
                                                     <th>User Akses</th>
-                                                    <th>Id User</th>
+                                                    <th>Id Users</th>
                                                     <th>Change</th>
                                                 </tr>
                                             </thead>
                                             <tfoot>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th>Negara</th>
+                                                    <th>Agama</th>
                                                     <th>Tanggal Input</th>
                                                     <th>User Input</th>
                                                     <th>User Akses</th>
@@ -65,7 +65,7 @@
                                                 </tr>
                                             </tfoot>
                                             <tbody>
-                                                <?php
+                                            <?php
                                                     require_once("../../../admin/dashboard/conn.php");
                                                     $no = 1;
                                                     $query = "SELECT * FROM kewarganegaraan AS w
@@ -95,74 +95,83 @@
                                 </div>
                             </div>
                             <div class="accordion-item">
+
                                 <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                                    Form Kewarganegaraan
+                                    Form Agama
                                 </button>
                                 </h2>
                                 <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
                                     <div class="accordion-body">
                                         <div class="">
                                             <?php
-                                                if(isset($_POST['simpan'])){
+                                                include 'koneksi/koneksi.php';
 
-                                                    // filter data yang diinputkan
-                                                $id_negara = filter_input(INPUT_POST, 'id_negara', FILTER_SANITIZE_STRING);
-                                                $nama_negara = filter_input(INPUT_POST, 'nama_negara', FILTER_SANITIZE_STRING);
-                                                $tgl_input = date("Y-m-d");
-                                                $user_input = $_SESSION['nama'];
-                                                $id_user = $_SESSION['id_user'];
+                                                $id_agama = ""; // Initialize the ID variable
 
-                                                if (empty($id_negara) || empty($nama_negara) || empty($tgl_input) || empty($user_input) || empty($id_user)){
-                                                    $error = "Form kosong";
-                                                    echo "<script>formkosong();</script>";
-                                                }
-                                                if(!isset($error)){
-                                                        //no error
-                                                    $sthandler = $conn->prepare("SELECT id_negara FROM kewarganegaraan WHERE id_negara = :id_negara");
-                                                    $sthandler->bindParam(':id_negara', $id_negara);
-                                                    $sthandler->execute();
-                                                            
-                                                        if($sthandler->rowCount() > 0){
-                                                            echo "<script>usernameexist();</script>";
-                                                        } else {
-                                                                    //Securly insert into database
-                                                                $sql = 'INSERT INTO kewarganegaraan (id_negara ,nama_negara, tgl_input, user_input, tgl_update, user_update,id_user) VALUES (:id_negara,:nama_negara,:tgl_input,:user_input,"","",:id_user)';    
-                                                                $query = $conn->prepare($sql);
+                                                // Check if an ID parameter is present in the URL (for update)
+                                                if (isset($_GET['id_agama'])) {
+                                                    $id = $_GET['id_agama'];
 
-                                                                $query->execute(array(
-                                                                
-                                                                    ":id_negara" => $id_negara,
-                                                                    ":nama_negara" => $nama_negara,
-                                                                    ":tgl_input" => $tgl_input,
-                                                                    ":user_input" => $user_input,
-                                                                    ":id_user" => $id_user
-                                                                
-                                                                ));
-                                                        }
-                                                            
+                                                    // Retrieve the existing record from the database
+                                                    $query = "SELECT * FROM agama WHERE id_agama = :id_agama";
+                                                    $stmt = $conn->prepare($query);
+                                                    $stmt->bindParam(':id_agama', $id_agama, PDO::PARAM_INT);
+                                                    $stmt->execute();
+                                                    
+                                                    if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                        // Populate form fields with existing data
+                                                        $name = $row['nama_agama'];
+                                                        // Populate other fields as needed
                                                     }
                                                 }
 
-                                            ?>
-                                            <form action="" method="POST">
-                                                <div class="row">
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" name="id_negara" class="form-control" id="id_negara" placeholder="id_negara">
-                                                        <label class="mx-2" for="id_negara">Id Negara</label>
-                                                    </div>
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" name="nama_negara" class="form-control" id="nama_negara" placeholder="nama_negara">
-                                                        <label class="mx-2" for="nama_negara">Nama Negara</label>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <input class="btn btn-primary btn-block w-100" type="submit" name="simpan" value="simpan">
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <input class="btn btn-danger btn-block w-100" type="reset">
-                                                    </div>
-                                                </div>
-                                            </form>
+                                                // Check if the form has been submitted
+                                                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                                    // Retrieve form data
+                                                    $name = $_POST['nama_agama'];
+                                                    // Retrieve other form fields as needed
+
+                                                    // Insert or update logic
+                                                    if (empty($id_agama)) {
+                                                        // No ID means we're inserting a new record
+                                                        $query = "INSERT INTO agama (nama, tgl_update, user_update) VALUES (:nama, :tgl_update, :user_update)";
+                                                    } else {
+                                                        // ID is present, so we're updating an existing record
+                                                        $query = "UPDATE your_table SET name = :name, other_column = :other_column WHERE id = :id";
+                                                    }
+
+                                                    $stmt = $conn->prepare($query);
+                                                    $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+                                                    $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+                                                    $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+                                                    // Bind other parameters as needed
+                                                    if (!empty($id)) {
+                                                        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                                                    }
+
+                                                    if ($stmt->execute()) {
+                                                        // Successful insert or update
+                                                        // Redirect or show a success message
+                                                    } else {
+                                                        // Error handling for database operation
+                                                    }
+                                                }
+                                                ?>
+
+                                                <!-- HTML form with fields for insertion and updating -->
+                                                <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="POST">
+                                                    <?php if (!empty($id)): ?>
+                                                        <!-- Hidden field to store ID for update -->
+                                                        <input type="hidden" name="id" value="<?= $id ?>">
+                                                    <?php endif; ?>
+                                                    
+                                                    <!-- Form fields for data entry -->
+                                                    <input type="text" name="name" value="<?= isset($name) ? $name : '' ?>">
+                                                    <!-- Other form fields go here -->
+
+                                                    <button type="submit">Submit</button>
+                                                </form>
                                         </div>
                                     </div>
                                 </div>
@@ -187,6 +196,22 @@
 
             $('.panel-collapse').on('hide.bs.collapse', function () {
                 $(this).siblings('.panel-heading').removeClass('active');
+            });
+        </script>
+        <script>
+            $(document).ready(function(){
+                $('#datepicker').datepicker({
+                    format: 'yyyy-mm-dd', // Use the appropriate format for your database (e.g., 'yyyy-mm-dd')
+                    autoclose: true
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function(){
+                $('#datepicker2').datepicker({
+                    format: 'yyyy-mm-dd', // Use the appropriate format for your database (e.g., 'yyyy-mm-dd')
+                    autoclose: true
+                });
             });
         </script>
     </body>

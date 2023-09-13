@@ -82,7 +82,7 @@
                                                     <td><?= $row['hak_akses']; ?> (<?= $row['username']; ?>)</td>
                                                     <td><?= $row['id_user']; ?></td>
                                                     <td>
-                                                    <a class="btn btn-warning btn-sm" type="button" href="edit-user.php?id_user=<?= $row['id_user']; ?>?form=2"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                    <a class="btn btn-warning btn-sm" type="button" href="edit-user.php?id_jenjang=<?= $row['id_jenjang']; ?>?form=2"><i class="fa-solid fa-pen-to-square"></i></a>
                                                         <a class="btn btn-danger btn-sm" type="button" onclick="return confirm('Data akan di Hapus?')" href="hapus-data.php?id_jenjang=<?= $row['id_jenjang']; ?>&form=2"><i class="fa-solid fa-trash"></i></a>
                                                     </td>
                                                 </tr>
@@ -128,7 +128,7 @@
                                                             echo "<script>usernameexist();</script>";
                                                         } else {
                                                                     //Securly insert into database
-                                                                $sql = 'INSERT INTO jenjang (id_jenjang ,nama_jenjang, tgl_input, user_input, id_user) VALUES (:id_jenjang,:nama_jenjang,:tgl_input,:user_input,:id_user)';    
+                                                                $sql = 'INSERT INTO jenjang (id_jenjang ,nama_jenjang, tgl_input, user_input, tgl_update, user_update, id_user) VALUES (:id_jenjang,:nama_jenjang,:tgl_input,:user_input,"","",:id_user)';    
                                                                 $query = $conn->prepare($sql);
 
                                                                 $query->execute(array(

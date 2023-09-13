@@ -33,7 +33,7 @@ try {
             $query = "DELETE FROM kewarganegaraan WHERE id_negara = :id";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
+            $stmt->execute(); 
             echo "<script>alert('Data berhasil dihapus.');window.location='form-kewarganegaraan.php';</script>";
             break;  
         default:
