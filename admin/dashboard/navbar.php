@@ -115,6 +115,10 @@ require_once("conn.php");
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Pendaftaran
                             </a>
+                            <a class="nav-link" href="http://localhost/terput2/admin/dashboard/pendaftarandata.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Data Pendaftaran
+                            </a>
                             <?php if ($_SESSION['hak_akses'] == 'admin') : ?>
                                 <div class="sb-sidenav-menu-heading">Register</div>
                                 <a class="nav-link" href="http://localhost/terput2/admin/dashboard/register.php">

@@ -26,22 +26,29 @@
             <div id="layoutSidenav_content">
                 <main id="admin" class="admin">
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Kewarganegaraan</h1>
+                        <h1 class="mt-4">jurusan</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="http://localhost/terput2/admin/dashboard/">Dashboard</a></li>
-                            <li class="breadcrumb-item ">Master</li>
-                            <li class="breadcrumb-item active">Kewarganegaraan</li>
+                            <li class="breadcrumb-item">Master</li>
+                            <li class="breadcrumb-item active">jurusan</li>
                         </ol>
                         <div class="accordion" id="accordionPanelsStayOpenExample">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                                    Data Kewarganegaraan
+                                    Data jurusan
                                 </button>
                                 </h2>
                                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
                                     <div class="accordion-body">
-                                        <table id="datatablesSimple">
+                                    <button class="btn btn-sm btn-success mb-3" onclick="exportData()">Export Data</button>
+                                    <script>
+                                        function exportData() {
+                                            // Redirect to the PHP script to trigger the export
+                                            window.location.href = 'export.php?table=jurusan';
+                                        }
+                                    </script>
+                                    <table id="datatablesSimple">
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
@@ -49,6 +56,8 @@
                                                     <th>Jenjang</th>
                                                     <th>Tanggal Input</th>
                                                     <th>User Input</th>
+                                                    <th>Tgl Update</th>
+                                                    <th>User Update</th>
                                                     <th>User Akses</th>
                                                     <th>Id User</th>
                                                     <th>Change</th>
@@ -61,6 +70,8 @@
                                                     <th>Jenjang</th>
                                                     <th>Tanggal Input</th>
                                                     <th>User Input</th>
+                                                    <th>Tgl Update</th>
+                                                    <th>User Update</th>
                                                     <th>User Akses</th>
                                                     <th>Id Users</th>
                                                     <th>Change</th>
@@ -84,10 +95,12 @@
                                                     <td><?= $row['nama_jenjang']; ?></td>
                                                     <td><?= $row['tgl_input']; ?></td>
                                                     <td><?= $row['nama']; ?></td>
+                                                    <td><?= $row['tgl_update']; ?></td>
+                                                    <td><?= $row['user_update']; ?></td>
                                                     <td><?= $row['hak_akses']; ?> (<?= $row['username']; ?>)</td>
                                                     <td><?= $row['id_user']; ?></td>
                                                     <td>
-                                                    <a class="btn btn-warning btn-sm" type="button" href="edit-user.php?id_jurusan=<?= $row['id_jurusan']; ?>?form=3"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                    <a class="btn btn-warning btn-sm" type="button" href="edit-jurusan.php?id_jurusan=<?= $row['id_jurusan']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
                                                         <a class="btn btn-danger btn-sm" type="button" onclick="return confirm('Data akan di Hapus?')" href="hapus-data.php?id_jurusan=<?= $row['id_jurusan']; ?>&form=3"><i class="fa-solid fa-trash"></i></a>
                                                     </td>
                                                 </tr>
@@ -102,7 +115,7 @@
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                                    Form Jurusan
+                                    Form jurusan
                                 </button>
                                 </h2>
                                 <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
@@ -114,12 +127,14 @@
                                                     // filter data yang diinputkan
                                                 $id_jurusan = filter_input(INPUT_POST, 'id_jurusan', FILTER_SANITIZE_STRING);
                                                 $nama_jurusan = filter_input(INPUT_POST, 'nama_jurusan', FILTER_SANITIZE_STRING);
-                                                $id_jenjang = filter_input(INPUT_POST, 'id_jenjang', FILTER_SANITIZE_STRING);
                                                 $tgl_input = date("Y-m-d");
                                                 $user_input = $_SESSION['nama'];
                                                 $id_user = $_SESSION['id_user'];
+                                                if(isset($_POST['id_jenjang'])) {
+                                                    $id_jenjang = filter_input(INPUT_POST, 'id_jenjang', FILTER_SANITIZE_STRING);
+                                                }
 
-                                                if (empty($id_jurusan) || empty($nama_jurusan) || empty($id_jenjang) || empty($tgl_input) || empty($user_input) || empty($id_user)){
+                                                if (empty($id_jurusan) || empty($nama_jurusan) ||  empty($tgl_input) || empty($user_input) || empty($id_user)){
                                                     $error = "Form kosong";
                                                     echo "<script>formkosong();</script>";
                                                         
@@ -135,18 +150,16 @@
                                                         } else {
                                                                     //Securly insert into database
                                                                 $sql = 'INSERT INTO jurusan (id_jurusan, nama_jurusan, id_jenjang, tgl_input, user_input, tgl_update, user_update, id_user) VALUES (:id_jurusan,:nama_jurusan,:id_jenjang,:tgl_input,:user_input,"","",:id_user)';    
-                                                                $query = $conn->prepare($sql);
+                                                                $stmt = $conn->prepare($sql);
 
-                                                                $query->execute(array(
-                                                                
-                                                                    ":id_jurusan" => $id_jurusan,
-                                                                    ":nama_jurusan" => $nama_jurusan,
-                                                                    ":id_jenjang" => $id_jenjang,
-                                                                    ":tgl_input" => $tgl_input,
-                                                                    ":user_input" => $user_input,
-                                                                    ":id_user" => $id_user
-                                                                
-                                                                ));
+                                                                $stmt->bindParam(':id_jurusan', $id_jurusan);
+                                                                $stmt->bindParam(':nama_jurusan', $nama_jurusan);
+                                                                $stmt->bindParam(':id_jenjang', $id_jenjang);
+                                                                $stmt->bindParam(':tgl_input', $tgl_input);
+                                                                $stmt->bindParam(':user_input', $user_input);
+                                                                $stmt->bindParam(':id_user', $id_user);
+                                                                    
+                                                                $stmt->execute();
                                                         }
                                                             
                                                     }
@@ -157,15 +170,15 @@
                                                 <div class="row">
                                                     <div class="form-floating mb-3">
                                                         <input type="text" name="id_jurusan" class="form-control" id="id_jurusan" placeholder="id_jurusan">
-                                                        <label class="mx-2" for="id_jurusan">Id Jurusan</label>
+                                                        <label class="mx-2" for="id_jurusan">Id jurusan</label>
                                                     </div>
                                                     <div class="form-floating mb-3">
                                                         <input type="text" name="nama_jurusan" class="form-control" id="nama_jurusan" placeholder="nama_jurusan">
-                                                        <label class="mx-2" for="nama_jurusan">Nama Jurusan</label>
+                                                        <label class="mx-2" for="nama_jurusan">Nama jurusan</label>
                                                     </div>
                                                     <div>
-                                                        <select name="id_jenjang" class="form-select form-select mb-3" aria-label=".form-select-lg example">
-                                                            <option selected hidden disabled>Pilih jenjang</option>
+                                                        <select name="id_jenjang" class="form-select mb-3" aria-label=".form-select-lg example">
+                                                            <option selected disabled>Pilih jenjang</option>
                                                                 <?php
                                                                 // Prepare and execute the SQL query
                                                                 $sqldata = "SELECT * FROM jenjang";

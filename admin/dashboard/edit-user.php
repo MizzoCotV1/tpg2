@@ -17,7 +17,6 @@
     <body class="sb-nav-fixed">
         <!-- Navbar -->
             <?php include 'navbar.php' ?>
-            <?php include 'adminpage.php' ?>
             <div id="layoutSidenav_content">
                 <!-- Start Body Content -->
                 <main id="admin" class="admin">

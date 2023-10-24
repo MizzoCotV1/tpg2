@@ -41,6 +41,13 @@
                                 </h2>
                                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
                                     <div class="accordion-body">
+                                        <button class="btn btn-sm btn-success mb-3" onclick="exportData()">Export Data</button>
+                                        <script>
+                                            function exportData() {
+                                                // Redirect to the PHP script to trigger the export
+                                                window.location.href = 'export.php?table=agama';
+                                            }
+                                        </script>
                                         <table id="datatablesSimple">
                                             <thead>
                                                 <tr>
@@ -48,6 +55,8 @@
                                                     <th>Agama</th>
                                                     <th>Tanggal Input</th>
                                                     <th>User Input</th>
+                                                    <th>Tgl Update</th>
+                                                    <th>User Update</th>
                                                     <th>User Akses</th>
                                                     <th>Id Users</th>
                                                     <th>Change</th>
@@ -59,6 +68,8 @@
                                                     <th>Agama</th>
                                                     <th>Tanggal Input</th>
                                                     <th>User Input</th>
+                                                    <th>Tgl Update</th>
+                                                    <th>User Update</th>
                                                     <th>User Akses</th>
                                                     <th>Id Users</th>
                                                     <th>Change</th>
@@ -79,10 +90,12 @@
                                                     <td><?= $row['nama_agama']; ?></td>
                                                     <td><?= $row['tgl_input']; ?></td>
                                                     <td><?= $row['nama']; ?></td>
+                                                    <td><?= $row['tgl_update']; ?></td>
+                                                    <td><?= $row['user_update']; ?></td>
                                                     <td><?= $row['hak_akses']; ?> (<?= $row['username']; ?>)</td>
                                                     <td><?= $row['id_user']; ?></td>
                                                     <td>
-                                                    <a class="btn btn-warning btn-sm" type="button" href="edit-user.php?id_agama=<?= $row['id_agama']; ?>?form=1"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                    <a class="btn btn-warning btn-sm" type="button" href="edit-agama.php?id_agama=<?= $row['id_agama']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
                                                         <a class="btn btn-danger btn-sm" type="button" onclick="return confirm('Data akan di Hapus?')" href="hapus-data.php?id_agama=<?= $row['id_agama']; ?>&form=1"><i class="fa-solid fa-trash"></i></a>
                                                     </td>
                                                 </tr>

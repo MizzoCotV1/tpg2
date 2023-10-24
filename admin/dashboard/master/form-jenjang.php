@@ -41,12 +41,21 @@
                                 </h2>
                                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
                                     <div class="accordion-body">
+                                        <button class="btn btn-sm btn-success mb-3" onclick="exportData()">Export Data</button>
+                                        <script>
+                                            function exportData() {
+                                                // Redirect to the PHP script to trigger the export
+                                                window.location.href = 'export.php?table=jenjang';
+                                            }
+                                        </script>
                                         <table id="datatablesSimple">
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Jenjang</th>
                                                     <th>Tanggal Input</th>
+                                                    <th>User Update</th>
+                                                    <th>User Akses</th>
                                                     <th>User Input</th>
                                                     <th>User Akses</th>
                                                     <th>Id User</th>
@@ -59,6 +68,8 @@
                                                     <th>Jenjang</th>
                                                     <th>Tanggal Input</th>
                                                     <th>User Input</th>
+                                                    <th>User Update</th>
+                                                    <th>User Akses</th>
                                                     <th>User Akses</th>
                                                     <th>Id Users</th>
                                                     <th>Change</th>
@@ -79,10 +90,12 @@
                                                     <td><?= $row['nama_jenjang']; ?></td>
                                                     <td><?= $row['tgl_input']; ?></td>
                                                     <td><?= $row['nama']; ?></td>
+                                                    <td><?= $row['tgl_update']; ?></td>
+                                                    <td><?= $row['user_update']; ?></td>
                                                     <td><?= $row['hak_akses']; ?> (<?= $row['username']; ?>)</td>
                                                     <td><?= $row['id_user']; ?></td>
                                                     <td>
-                                                    <a class="btn btn-warning btn-sm" type="button" href="edit-user.php?id_jenjang=<?= $row['id_jenjang']; ?>?form=2"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                    <a class="btn btn-warning btn-sm" type="button" href="edit-jenjang.php?id_jenjang=<?= $row['id_jenjang']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
                                                         <a class="btn btn-danger btn-sm" type="button" onclick="return confirm('Data akan di Hapus?')" href="hapus-data.php?id_jenjang=<?= $row['id_jenjang']; ?>&form=2"><i class="fa-solid fa-trash"></i></a>
                                                     </td>
                                                 </tr>

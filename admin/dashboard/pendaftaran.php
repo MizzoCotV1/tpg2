@@ -59,7 +59,7 @@
                                                 $tgl_lahir = $_POST['tgl_lahir'];
                                                 
                                                 $tgl_input = date("Y-m-d");
-                                                $user_input = filter_input(INPUT_POST, 'tempat_lahir', FILTER_SANITIZE_STRING);
+                                                $user_input = $_SESSION['nama'];
                                                 $id_user = $_SESSION['id_user'];
 
                                                 if(isset($_POST['status']) || isset($_POST['negara']) || isset($_POST['agama']) || isset($_POST['jurusan'])) {
@@ -114,10 +114,6 @@
                                                         <label class="mx-2" for="nis">NIS</label>
                                                     </div>
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" name="user_input" class="form-control" id="user_input" placeholder="user_input">
-                                                        <label class="mx-2" for="user_input">User Input</label>
-                                                    </div>
-                                                    <div class="form-floating mb-3">
                                                         <input type="text" name="nama_siswa" class="form-control" id="nama_siswa" placeholder="nama_siswa">
                                                         <label class="mx-2" for="nama_siswa">Nama Siswa</label>
                                                     </div>
@@ -129,13 +125,13 @@
                                                         <div class="col-sm-12">
                                                             <label>Jenis Kelamin :</label>
                                                             <div class="form-check form-check-inline">
-                                                                <input class="form-check-input mx-2" type="radio" name="gender" id="male" value="male" checked>
+                                                                <input class="form-check-input mx-2" type="radio" name="gender" id="male" value="Laki" checked>
                                                                 <label class="form-check-label" for="male">
                                                                     Laki-Laki
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+                                                                <input class="form-check-input" type="radio" name="gender" id="female" value="Perempuan">
                                                                 <label class="form-check-label" for="female">
                                                                     Perempuan
                                                                 </label>
@@ -159,8 +155,8 @@
                                                     <div class="">
                                                         <select name="status" class="form-select mb-3" aria-label=".form-select-lg example">
                                                             <option selected hidden disabled>Status</option>
-                                                            <option value="baru">Baru</option>
-                                                            <option value="pindahan">Pindahan</option>
+                                                            <option value="Baru">Baru</option>
+                                                            <option value="Pindahan">Pindahan</option>
                                                         </select>
                                                     </div>
                                                     <div>
@@ -194,7 +190,7 @@
                                                         </select>
                                                     </div>
                                                     <div>
-                                                    <select class="form-control" name="jurusan" id="kelas">
+                                                    <select class="form-control mb-3" name="jurusan" id="kelas">
                                                         <option value="">Pilih Kelas</option>
                                                         <?php
                                                         // Prepare and execute the SQL query using PDO
